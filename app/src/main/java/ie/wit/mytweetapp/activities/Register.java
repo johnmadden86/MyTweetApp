@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import ie.wit.mytweetapp.R;
 import ie.wit.mytweetapp.main.MyTweetApp;
+import ie.wit.mytweetapp.models.User;
 
 import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
@@ -32,8 +33,18 @@ public class Register extends AppCompatActivity {
         EditText email = (EditText) findViewById(R.id.Email);
         EditText password = (EditText) findViewById(R.id.Password);
 
+        User user = new User(
+                firstName.getText().toString(),
+                lastName.getText().toString(),
+                email.getText().toString(),
+                password.getText().toString()
+        );
+
+        app.userCollection.newUser(user);
         Log.v("MyTweet", "Registering " + firstName.getText() + " " + lastName.getText());
-        Toast.makeText(this, "Registering " + firstName.getText() + " " + lastName.getText(), Toast.LENGTH_SHORT).show();
+        app.loggedInUser = user;
+        Toast.makeText(this, "Welcome " + user.firstName, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, TimelineActivity.class));
     }
 
     public void loginButtonPressed(View view) {

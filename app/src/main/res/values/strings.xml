@@ -20,4 +20,5 @@
     <string name="timeline">Timeline</string>
     <string name="logout">Logout</string>
     <string name="new_tweet">New Tweet</string>
+    <string name="delete_all">Delete All Tweets</string>
 </resources>

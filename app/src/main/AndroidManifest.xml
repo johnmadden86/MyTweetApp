@@ -16,17 +16,22 @@
         <activity
             android:name=".activities.Login"
             android:label="@string/login">
-        </activity>
-        <activity android:name=".activities.TweetActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TimelineActivity">
+        <activity
+            android:name=".activities.TweetActivity"
+            android:label="@string/new_tweet">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.TweetActivity" />
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.TimelineActivity" />
+        </activity>
+        <activity
+            android:name=".activities.TimelineActivity"
+            android:label="@string/timeline">
+
         </activity>
     </application>
 </manifest>

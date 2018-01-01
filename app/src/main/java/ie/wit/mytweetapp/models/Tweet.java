@@ -6,11 +6,12 @@ import java.util.Random;
 public class Tweet {
     public Long date, id;
     public String text;
+    public User author;
 
-    public Tweet() {
+    public Tweet(User author) {
+        this.author = author;
         this.id = unsignedLong();
         date = new Date().getTime();
-        this.text = text;
     }
 
     public void setDate(Long date) {
@@ -21,7 +22,7 @@ public class Tweet {
         this.text = text;
     }
 
-    private static Long unsignedLong() {
+    static Long unsignedLong() {
         long rndVal;
         do {
             rndVal = new Random().nextLong();

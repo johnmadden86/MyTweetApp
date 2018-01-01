@@ -60,16 +60,14 @@ public  class   TimelineFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                Toast.makeText(getActivity(), "Back Selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), TweetActivity.class));
-                break;
             case R.id.composeTweet:
                 startActivity(new Intent(getActivity(), TweetActivity.class));
                 break;
             case R.id.menuSettings:
                 Toast.makeText(getActivity(), "Settings Selected", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.delete_all:
+                Toast.makeText(getActivity(), "Delete Selected", Toast.LENGTH_SHORT).show();
             case R.id.menuLogout:
                 Toast.makeText(getActivity(), "Logout Selected", Toast.LENGTH_SHORT).show();
                 break;

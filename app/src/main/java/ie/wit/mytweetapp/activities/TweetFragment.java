@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,7 +49,7 @@ public  class       TweetFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         app = getApp();
-        tweet = new Tweet();
+        tweet = new Tweet(app.loggedInUser);
     }
 
     @Override
@@ -120,7 +119,7 @@ public  class       TweetFragment
     @Override
     public void onResume() {
         super.onResume();
-        tweet = new Tweet();
+        tweet = new Tweet(app.loggedInUser);
     }
 
     @Override
@@ -136,7 +135,7 @@ public  class       TweetFragment
         int charCount = charLimit - tweetLength;
         this.charCount.setText(String.valueOf(charCount));
         this.charCount.setTextColor(charCount >= 0 ? Color.BLACK : Color.RED);
-        sendTweetButton.setEnabled(charCount >= 0);
+        sendTweetButton.setEnabled(charCount >= 0 || charCount == 140);
     }
 
     @Override
