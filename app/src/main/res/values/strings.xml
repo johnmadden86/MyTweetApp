@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MyTweetApp</string>
+    <string name="sign_up">Sign-Up</string>
+    <string name="login">Login</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register_button">Register For MyTweet</string>
+    <string name="register">Register</string>
+    <string name="not_registered">Not registered?</string>
+    <string name="already_registered">Already Registered?</string>
 </resources>
