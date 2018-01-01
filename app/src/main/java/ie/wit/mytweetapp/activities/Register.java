@@ -10,14 +10,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ie.wit.mytweetapp.R;
+import ie.wit.mytweetapp.main.MyTweetApp;
+
+import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
 public class Register extends AppCompatActivity {
+
+    private MyTweetApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        app = getApp();
         Log.v("MyTweet", "Sign up page loaded");
     }
 

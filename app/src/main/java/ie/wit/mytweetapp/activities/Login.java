@@ -9,15 +9,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import ie.wit.mytweetapp.R;
+import ie.wit.mytweetapp.main.MyTweetApp;
+
+import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
 public class Login extends AppCompatActivity {
 
+    private MyTweetApp app;
     private EditText email, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        app = getApp();
 
         email = (EditText) findViewById(R.id.Email);
         password = (EditText) findViewById(R.id.Password);

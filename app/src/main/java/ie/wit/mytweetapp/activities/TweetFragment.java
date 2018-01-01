@@ -2,9 +2,11 @@ package ie.wit.mytweetapp.activities;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,7 +28,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ie.wit.mytweetapp.R;
+import ie.wit.mytweetapp.main.MyTweetApp;
 import ie.wit.mytweetapp.models.Tweet;
+
+import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
 public  class       TweetFragment
         extends     Fragment
@@ -34,6 +39,7 @@ public  class       TweetFragment
                     TextWatcher,
                     OnDateSetListener{
 
+    private MyTweetApp app;
     private EditText textInput;
     private TextView charCount;
     private Button sendTweetButton, editDateButton, selectContactButton;
@@ -43,6 +49,7 @@ public  class       TweetFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        app = getApp();
         tweet = new Tweet();
     }
 
@@ -87,8 +94,11 @@ public  class       TweetFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.home:
+                startActivity(new Intent(getActivity(), TimelineActivity.class));
+                break;
             case R.id.menuTimeline:
-                Toast.makeText(getActivity(), "Timeline Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), TimelineActivity.class));
                 break;
             case R.id.menuSettings:
                 Toast.makeText(getActivity(), "Settings Selected", Toast.LENGTH_SHORT).show();
@@ -105,6 +115,12 @@ public  class       TweetFragment
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tweet = new Tweet();
     }
 
     @Override
@@ -159,8 +175,10 @@ public  class       TweetFragment
 
     public void sendTweet() {
         tweet.setText(textInput.getText().toString());
-        Log.v("MyTweet", tweet.text + "length " + textInput.length());
-        Toast.makeText(getActivity(), "Tweet Sent! " + tweet.text, Toast.LENGTH_SHORT).show();
+        Log.v("MyTweet", tweet.text + " length: " + textInput.length());
+        Toast.makeText(getActivity(), "Tweet Sent! ", Toast.LENGTH_SHORT).show();
         textInput.setText("");
+        app.tweetCollection.newTweet(tweet);
+        startActivity(new Intent(getActivity(), TimelineActivity.class));
     }
 }
