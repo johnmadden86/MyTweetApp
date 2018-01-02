@@ -26,7 +26,6 @@ public  class   MyTweetApp
         app = this;
         userCollection = new UserCollection();
         tweetCollection = new TweetCollection();
-
     }
 
     public static MyTweetApp getApp() {

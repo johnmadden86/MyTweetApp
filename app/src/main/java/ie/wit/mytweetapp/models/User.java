@@ -8,7 +8,7 @@ import static ie.wit.mytweetapp.models.Tweet.unsignedLong;
 public class User {
     Long id;
     public String firstName;
-    private String lastName;
+    public String lastName;
     String email;
     String password;
 

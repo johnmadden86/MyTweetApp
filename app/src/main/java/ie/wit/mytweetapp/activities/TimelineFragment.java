@@ -1,17 +1,20 @@
 package ie.wit.mytweetapp.activities;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +25,12 @@ import ie.wit.mytweetapp.main.MyTweetApp;
 import ie.wit.mytweetapp.models.Tweet;
 import ie.wit.mytweetapp.models.TweetCollection;
 
+import static ie.wit.mytweetapp.android.helpers.IntentHelper.startActivityWithData;
 import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
-public  class   TimelineFragment
-        extends ListFragment {
+public  class       TimelineFragment
+        extends     ListFragment
+        implements  OnItemClickListener {
 
     private MyTweetApp app;
     private TweetCollection tweetCollection;
@@ -43,6 +48,8 @@ public  class   TimelineFragment
 
         adapter = new TweetAdapter(getActivity(), tweets);
         setListAdapter(adapter);
+
+
     }
 
     @Override
@@ -52,9 +59,23 @@ public  class   TimelineFragment
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Tweet tweet = ((TweetAdapter) getListAdapter()).getItem(position);
+        Intent intent = new Intent(getActivity(), TweetActivity.class);
+        intent.putExtra("TWEET_ID", tweet.id);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.timeline_menu, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((TweetAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
@@ -67,7 +88,11 @@ public  class   TimelineFragment
                 Toast.makeText(getActivity(), "Settings Selected", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete_all:
-                Toast.makeText(getActivity(), "Delete Selected", Toast.LENGTH_SHORT).show();
+                tweetCollection.tweets.clear();
+                // TODO delete request to API
+                Toast.makeText(getActivity(), "All tweets deleted!", Toast.LENGTH_SHORT).show();
+                ((TweetAdapter) getListAdapter()).notifyDataSetChanged();
+                break;
             case R.id.menuLogout:
                 Toast.makeText(getActivity(), "Logout Selected", Toast.LENGTH_SHORT).show();
                 break;
@@ -78,9 +103,9 @@ public  class   TimelineFragment
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((TweetAdapter) getListAdapter()).notifyDataSetChanged();
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Tweet tweet = adapter.getItem(position);
+        startActivityWithData(getActivity(), TweetActivity.class, "TWEET_ID", tweet.id);
     }
 
     class TweetAdapter extends ArrayAdapter<Tweet> {
@@ -94,14 +119,16 @@ public  class   TimelineFragment
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.row_layout, null);
+                convertView = inflater.inflate(R.layout.list_item_tweet, null);
             }
             Tweet tweet = getItem(position);
-            TextView dateView = (TextView) convertView.findViewById(R.id.row_date);
-            TextView textView = (TextView) convertView.findViewById(R.id.row_text);
+            TextView dateView = (TextView) convertView.findViewById(R.id.tweet_date);
+            TextView textView = (TextView) convertView.findViewById(R.id.tweet_text);
+            TextView authorView = (TextView) convertView.findViewById(R.id.tweet_author);
 
             dateView.setText(tweet.getDateString());
             textView.setText(tweet.text);
+            authorView.setText(tweet.author.firstName + " " + tweet.author.lastName);
 
             return convertView;
         }
