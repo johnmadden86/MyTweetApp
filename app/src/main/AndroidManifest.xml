@@ -34,5 +34,10 @@
             android:name=".activities.TimelineActivity"
             android:label="@string/timeline">
         </activity>
+        <activity android:name=".activities.SettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TimelineActivity" />
+        </activity>
     </application>
 </manifest>

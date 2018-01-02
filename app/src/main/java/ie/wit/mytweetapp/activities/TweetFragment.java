@@ -110,7 +110,7 @@ public  class       TweetFragment
 
         emailButton = (Button) v.findViewById(R.id.email_button);
         emailButton.setOnClickListener(this);
-        // emailButton.setEnabled(emailAddress != null);
+        emailButton.setEnabled(emailAddress != null);
 
         if (!newTweet) {
             textInput.setEnabled(false);
@@ -138,10 +138,10 @@ public  class       TweetFragment
                 startActivity(new Intent(getActivity(), TimelineActivity.class));
                 break;
             case R.id.menuSettings:
-                Toast.makeText(getActivity(), "Settings Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
             case R.id.menuLogout:
-                Toast.makeText(getActivity(), "Logout Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), Login.class));
                 break;
             default:
                 return super.onOptionsItemSelected(item);

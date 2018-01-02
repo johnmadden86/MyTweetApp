@@ -11,7 +11,8 @@ import static ie.wit.mytweetapp.models.Tweet.unsignedLong;
 public class User {
     Long id;
     public String firstName, lastName;
-    String email, password;
+    public String email;
+    public String password;
 
     private static final String JSON_ID = "id";
     private static final String JSON_FIRST_NAME = "firstName";

@@ -92,7 +92,7 @@ public  class       TimelineFragment
                 startActivity(new Intent(getActivity(), TweetActivity.class));
                 break;
             case R.id.menuSettings:
-                Toast.makeText(getActivity(), "Settings Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 break;
             case R.id.delete_all:
                 tweetCollection.tweets.clear();
@@ -101,7 +101,7 @@ public  class       TimelineFragment
                 ((TweetAdapter) getListAdapter()).notifyDataSetChanged();
                 break;
             case R.id.menuLogout:
-                Toast.makeText(getActivity(), "Logout Selected", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), Login.class));
                 break;
             default:
                 return super.onOptionsItemSelected(item);
