@@ -6,9 +6,16 @@ import java.util.ArrayList;
 
 public class UserCollection {
     public ArrayList<User> users;
+    private UserSerializer serializer;
 
-    public UserCollection() {
-        this.users = new ArrayList<>();
+    public UserCollection(UserSerializer serializer) {
+        this.serializer = serializer;
+        try {
+            users = serializer.loadUsers();
+        } catch (Exception e) {
+            Log.v("MyTweet","Error loading users: " + e.getMessage());
+            users = new ArrayList<>();
+        };
     }
 
     public void newUser(User user) {
@@ -43,6 +50,17 @@ public class UserCollection {
         }
         Log.v("MyTweet", "user not found");
         return false;
+    }
+
+    public boolean saveUsers() {
+        try {
+            serializer.saveUsers(users);
+            Log.v("MyTweet", "Users saved to file");
+            return true;
+        } catch (Exception e) {
+            Log.v("MyTweet","Error saving users: " + e.getMessage());
+            return false;
+        }
     }
 }
 

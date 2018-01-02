@@ -185,7 +185,7 @@ public  class       TimelineFragment
 
             dateView.setText(tweet.getDateString());
             textView.setText(tweet.text);
-            authorView.setText(tweet.author.getFullName());
+            authorView.setText(tweet.author);
 
             return convertView;
         }

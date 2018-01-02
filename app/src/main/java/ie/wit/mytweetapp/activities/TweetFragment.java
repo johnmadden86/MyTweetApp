@@ -152,6 +152,7 @@ public  class       TweetFragment
     @Override
     public void onPause() {
         super.onPause();
+        app.save();
     }
 
     @Override
