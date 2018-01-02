@@ -1,17 +1,20 @@
 package ie.wit.mytweetapp.models;
 
+import android.content.Context;
+
 import java.util.Date;
 import java.util.Random;
 
 public class Tweet {
     public Long date, id;
-    public String text;
+    public String text, contact;
     public User author;
 
     public Tweet(User author) {
         this.author = author;
-        this.id = unsignedLong();
+        id = unsignedLong();
         date = new Date().getTime();
+        contact = ": none";
     }
 
     public void setDate(Long date) {
@@ -33,5 +36,10 @@ public class Tweet {
     public String getDateString() {
         String dateFormat = "EEE d MMM yyyy H:mm";
         return android.text.format.DateFormat.format(dateFormat, date).toString();
+    }
+
+    public String shareTweetString(Context context) {
+        return "Tweet: " + text + ", Date: " + getDateString() + ", Author: "  + author.getFullName();
+
     }
 }

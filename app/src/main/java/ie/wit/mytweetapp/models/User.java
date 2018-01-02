@@ -19,4 +19,8 @@ public class User {
         this.password = password;
         this.id = unsignedLong();
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

@@ -22,4 +22,5 @@
     <string name="new_tweet">New Tweet</string>
     <string name="delete_all">Delete All Tweets</string>
     <string name="delete">Delete</string>
+    <string name="share_tweet_subject">Check out this tweet!</string>
 </resources>

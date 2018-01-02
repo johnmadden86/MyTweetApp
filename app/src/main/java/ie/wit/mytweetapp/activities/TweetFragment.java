@@ -1,12 +1,20 @@
 package ie.wit.mytweetapp.activities;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +40,9 @@ import ie.wit.mytweetapp.main.MyTweetApp;
 import ie.wit.mytweetapp.models.Tweet;
 import ie.wit.mytweetapp.models.TweetCollection;
 
+import static ie.wit.mytweetapp.android.helpers.ContactHelper.getContact;
+import static ie.wit.mytweetapp.android.helpers.ContactHelper.getEmail;
+import static ie.wit.mytweetapp.android.helpers.ContactHelper.sendEmail;
 import static ie.wit.mytweetapp.android.helpers.IntentHelper.navigateUp;
 import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 import static java.lang.String.valueOf;
@@ -49,7 +60,10 @@ public  class       TweetFragment
 
     private EditText textInput;
     private TextView charCount;
-    private Button sendTweetButton, editDateButton, selectContactButton;
+    private Button sendTweetButton, editDateButton, selectContactButton, emailButton;
+    private static final int REQUEST_CONTACT = 1;
+    private String emailAddress;
+    private Intent data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +107,10 @@ public  class       TweetFragment
 
         selectContactButton = (Button) v.findViewById(R.id.select_contact_button);
         selectContactButton.setOnClickListener(this);
+
+        emailButton = (Button) v.findViewById(R.id.email_button);
+        emailButton.setOnClickListener(this);
+        // emailButton.setEnabled(emailAddress != null);
 
         if (!newTweet) {
             textInput.setEnabled(false);
@@ -176,10 +194,16 @@ public  class       TweetFragment
                 dpd.show();
                 break;
             case R.id.select_contact_button:
-                Toast.makeText(getActivity(), "TODO: contact", Toast.LENGTH_SHORT).show();
+                //selectContact(getActivity(), REQUEST_CONTACT);
+                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(i, REQUEST_CONTACT);
                 break;
             case R.id.email_button:
-                Toast.makeText(getActivity(), "TODO: email", Toast.LENGTH_SHORT).show();
+                sendEmail(
+                        getActivity(),
+                        emailAddress,
+                        getString(R.string.share_tweet_subject),
+                        tweet.shareTweetString(getActivity()));
                 break;
 
         }}
@@ -202,4 +226,44 @@ public  class       TweetFragment
         startActivity(new Intent(getActivity(), TimelineActivity.class));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CONTACT:
+                this.data = data;
+                checkContactsReadPermission();
+                break;
+        }
+    }
+
+    private void checkContactsReadPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT);
+        }
+        else {
+            readContact();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult
+            (int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CONTACT: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    readContact();
+                }
+            }
+        }
+    }
+
+    private void readContact() {
+        String name = getContact(getActivity(), data);
+        emailAddress = getEmail(getActivity(), data);
+        selectContactButton.setText(name + " : " + emailAddress);
+        tweet.contact = name;
+    }
 }

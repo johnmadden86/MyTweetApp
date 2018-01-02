@@ -1,6 +1,8 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ie.wit.mytweetapp">
-
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ie.wit.mytweetapp" >
+    <uses-permission
+        android:name="android.permission.READ_CONTACTS" />
     <application
         android:name=".main.MyTweetApp"
         android:allowBackup="true"
@@ -25,13 +27,12 @@
             android:name=".activities.TweetActivity"
             android:label="@string/new_tweet">
             <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".activities.TimelineActivity" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.TimelineActivity" />
         </activity>
         <activity
             android:name=".activities.TimelineActivity"
             android:label="@string/timeline">
-
         </activity>
     </application>
 </manifest>
