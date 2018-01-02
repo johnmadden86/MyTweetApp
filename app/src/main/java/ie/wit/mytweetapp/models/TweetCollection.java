@@ -13,6 +13,10 @@ public class TweetCollection {
         tweets.add(tweet);
     }
 
+    public void deleteTweet(Tweet tweet) {
+        tweets.remove(tweet);
+    }
+
     public Tweet getTweet(Long id) {
         for (Tweet tweet : tweets) {
             if (id.equals(tweet.id)) {

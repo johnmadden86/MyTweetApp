@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -30,12 +32,14 @@ import static ie.wit.mytweetapp.main.MyTweetApp.getApp;
 
 public  class       TimelineFragment
         extends     ListFragment
-        implements  OnItemClickListener {
+        implements  OnItemClickListener,
+                    MultiChoiceModeListener {
 
     private MyTweetApp app;
     private TweetCollection tweetCollection;
     private TweetAdapter adapter;
     private ArrayList<Tweet> tweets;
+    private ListView listView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,9 @@ public  class       TimelineFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, parent, savedInstanceState);
+        listView = (ListView) v.findViewById(android.R.id.list);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(this);
         return v;
     }
 
@@ -107,6 +114,56 @@ public  class       TimelineFragment
         Tweet tweet = adapter.getItem(position);
         startActivityWithData(getActivity(), TweetActivity.class, "TWEET_ID", tweet.id);
     }
+
+
+    /* ************ MultiChoiceModeListener methods (begin) *********** */
+
+    @Override
+    public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
+
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+        MenuInflater inflater = actionMode.getMenuInflater();
+        inflater.inflate(R.menu.timeline_context, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_item_delete:
+                deleteResidence(actionMode);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode actionMode) {
+
+    }
+
+    private void deleteResidence(ActionMode actionMode) {
+        for (int i = adapter.getCount() - 1; i >= 0; i--) {
+            if (listView.isItemChecked(i)) {
+                tweetCollection.deleteTweet(adapter.getItem(i));
+            }
+        }
+        actionMode.finish();
+        adapter.notifyDataSetChanged();
+    }
+
+
+      /* ************ MultiChoiceModeListener methods (end) *********** */
+
 
     class TweetAdapter extends ArrayAdapter<Tweet> {
         private Context context;

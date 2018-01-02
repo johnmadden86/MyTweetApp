@@ -93,6 +93,11 @@ public  class       TweetFragment
 
         selectContactButton = (Button) v.findViewById(R.id.select_contact_button);
         selectContactButton.setOnClickListener(this);
+
+        if (!newTweet) {
+            textInput.setEnabled(false);
+            editDateButton.setEnabled(false);
+        }
     }
 
     public void updateControls(Tweet tweet) {
@@ -149,7 +154,7 @@ public  class       TweetFragment
         int charCount = charLimit - tweetLength;
         this.charCount.setText(valueOf(charCount));
         this.charCount.setTextColor(charCount >= 0 ? Color.BLACK : Color.RED);
-        sendTweetButton.setEnabled(charCount >= 0 && charCount < charLimit);
+        sendTweetButton.setEnabled(charCount >= 0 && charCount < charLimit && newTweet);
     }
 
     @Override
