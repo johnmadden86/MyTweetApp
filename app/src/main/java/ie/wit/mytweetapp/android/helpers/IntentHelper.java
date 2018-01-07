@@ -2,6 +2,7 @@ package ie.wit.mytweetapp.android.helpers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
 

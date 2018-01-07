@@ -16,8 +16,7 @@
             android:label="@string/register">
         </activity>
         <activity
-            android:name=".activities.Login"
-            android:label="@string/login">
+            android:name=".activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
